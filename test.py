@@ -47,8 +47,8 @@
 import mysql.connector
 from mysql_connection import get_connection
 
-name = '순두부'
-description = '순두부 찌게'
+name = '된장'
+description = '된장 찌게'
 cook_time = 30
 directions = '이렇게 저렇게 끓인다'
 
