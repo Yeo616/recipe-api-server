@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from multiprocessing import connection
 from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
@@ -17,6 +18,10 @@ from mysql_connection import get_connection
 # 우리가 지금 만드는 API는 POST임.
 class RecipeListResource(Resource):
     # restful api의 method에 해당하는 함수 작성
+
+    @ jwt_required()
+    # 무조건 header부분에 Authorization의 키 값이 있어야한다. 
+
     def post(self):
         # 딱 요 형식으로 만들어야 한다. 이게 flask 프레임워크임. 정해져있음. 
         # 만든다음에 우리가 작성한 URL에 연결시킬것이다. 
@@ -29,6 +34,8 @@ class RecipeListResource(Resource):
         # 받아오는 코드
         data = request.get_json()
 
+        user_id= get_jwt_identity()
+
         # 받아온 데이터를 디비 저장하면 된다.
         try:
             # 데이터 insert 
@@ -40,7 +47,7 @@ class RecipeListResource(Resource):
                     (name, description, cook_time, directions, user_id)
                     values
                     (%s,%s,%s,%s,%s);'''
-            record = (data['name'],data['description'], data['cook_time'],data['directions'], data['user_id'] )
+            record = (data['name'],data['description'], data['cook_time'],data['directions'], user_id )
 
             # 3. 커서를 가져온다.
             cursor = connection.cursor()

@@ -141,6 +141,7 @@ class UserLoginResource(Resource):
             # 암호화 하고, DB 회원 테이블에다가 insert, 인서트한 커서에 방금 insert한 user_id를 가져온다. 
 
             print(result_list)
+            # 디버깅 하라 때는 프린트문을 항상 찍어본다. 
 
             # 중요! 디비에서 가져온 timestamp 는 
             # 파이썬의 datetime 으로 자동 변경된다.

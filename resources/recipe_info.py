@@ -1,5 +1,7 @@
 from http import HTTPStatus
+from unittest import result
 from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
@@ -56,18 +58,47 @@ class RecipeResource(Resource) :
         return {'result' : 'success' ,
                 'info' : result_list[0]}
 
-
+    @jwt_required()
     # 데이터를 업데이트하는 API들은 put 함수를 사용한다.
     def put(self, recipe_id) :
 
         # body에서 전달된 데이터를 처리
         data = request.get_json()
 
+        user_id = get_jwt_identity()
+
+
         # 디비 업데이트 실행코드
         try :
             # 데이터 업데이트 
             # 1. DB에 연결
             connection = get_connection()
+
+            ### 먼저 recipe_id에 들어있는 user_id가 이 사람인지 먼저 확인한다.
+
+            query = '''select user_id
+                        from recipe
+                        where id = %s;'''
+            record = (recipe_id,)
+
+            # 커서 가져와서 execute
+            cursor = connection.cursor(dictionary = True)
+            cursor.execute(query, record)
+            # 실행을 시키면 result_list가 온다. 
+            result_lsit = cursor.fetchall()
+
+            if len(result_lsit) == 0:
+                cursor.close()
+                connection.close()
+                return{'error':'레시피 아이디가 잘못되었습니다.'},400
+
+            recipe = result_lsit[0] # 레시피
+
+            if recipe['user_id'] != user_id:
+                cursor.close()
+                connection.close()
+                return{'error':'타인의 레시피를 수정할 수 없습니다.'},401
+                # 401: 인증이 잘못된거다 라는 뜻.
 
             # 2. 쿼리문 만들기
             query = '''update recipe
