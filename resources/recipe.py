@@ -79,15 +79,13 @@ class RecipeListResource(Resource):
                     where is_publish =1
                     limit '''+offset+''' , '''+limit+''';'''
 
-
-        # select문은, dictionary = True를 해준다.
             cursor = connection.cursor(dictionary = True)
-
             cursor.execute(query)
 
             # select문은, 아래 함수를 이용해서, 데이터를 가져온다. 
             result_list = cursor.fetchall()
-            
+            # 여기에 쿼리의 결과가 있음
+
             print(result_list)
 
             # 중요!
@@ -100,7 +98,7 @@ class RecipeListResource(Resource):
                 result_list[i]['created_at'] = record['created_at'].isoformat()
                 result_list[i]['updated_at'] = record['updated_at'].isoformat()
                 i = i + 1             
-                # 
+                
             cursor.close()
             connection.close()
 
@@ -113,6 +111,14 @@ class RecipeListResource(Resource):
             return {"error" : str(e)}, 503
             # 503으로 보내겠다.
         
+
+        # result_list정상적일 때는 결과가 리스트의 행이 하나, 
+
+        # 3. result_list의 행의 갯수가 1개이면, 유저 데이터를 정상적으로 받아온것이고, 
+        # 행의 갯수가 0이면, 요청한 이메일은, 회원가입이 되어있지 않은 이메일이다.
+
+
+
         return { "result" : "success" , 
                 "count" : len(result_list) ,
                 "result_list" : result_list }, 200

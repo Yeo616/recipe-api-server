@@ -3,6 +3,7 @@ from flask_restful import Api
 from resources.recipe import RecipeListResource
 from resources.recipe_info import RecipeResource
 from resources.recipe_publish import RecipePublishResource
+from resources.user import UserLoginResource, UserRegisterResource
 
 
 
@@ -19,6 +20,8 @@ api.add_resource(RecipeResource,'/recipes/<int:recipe_id>') # 이 뒤에있는 �
 api.add_resource(RecipePublishResource,'/recipes/<int:recipe_id>/publish') 
 # 숫자가 올것이다. 숫자가 바뀔수도 있으니, 내가 변수처리를 하겠다. 
 # 어떤 숫자가 올지는 클라가 바꿔서 보낸다.
+api.add_resource(UserRegisterResource,'/users/register')
+api.add_resource(UserLoginResource,'/users/login')
 
 if __name__ == '__main__':
     app.run()
