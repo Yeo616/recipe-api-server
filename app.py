@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from config import Config
 from resources.recipe import RecipeListResource
@@ -14,7 +15,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # JWT 토큰 라이브러리 만들기
-
+# JWTManager: JWT토큰이 유효한지 관리해주는 라이브러리
+jwt = JWTManager(app)
 
 
 # 우리가 만들건 restful 서버임

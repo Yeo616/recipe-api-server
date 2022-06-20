@@ -1,5 +1,6 @@
 from http import HTTPStatus
 from flask import request
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
@@ -50,7 +51,6 @@ class UserRegisterResource(Resource):
             # 해당 상황은 예외상황 처리임. 이게 잘 되어야함.
 
 
-
         # 4. 비밀번호를 암호화 한다.
         # 비밀번호: data['password']
         hashed_password = hash_password( data['password'] )
@@ -95,8 +95,14 @@ class UserRegisterResource(Resource):
             cursor.close()
             connection.close()
             return {"error": str(e)}, 503
+        
+        # user_id를 바로 보내면 안되고, JWT로 암호화 해서 보내준다.
+        # 암호화 하는 방법
+        access_token = create_access_token(user_id)
+        # 대게는 이런 변수명으로 저장한다.
 
-        return {"result":"success", 'user_id': user_id},200
+        return {"result":"success", 'access_token': access_token},200
+        # return {"result":"success", 'user_id': user_id},200
 
 # 경로가 다르기 때문에 새로운 class가 필요하다
 class UserLoginResource(Resource):
@@ -132,6 +138,7 @@ class UserLoginResource(Resource):
             # select문은, 아래 함수를 이용해서, 데이터를 가져온다. 
             result_list = cursor.fetchall()
             # 여기에 쿼리의 결과가 있음
+            # 암호화 하고, DB 회원 테이블에다가 insert, 인서트한 커서에 방금 insert한 user_id를 가져온다. 
 
             print(result_list)
 
@@ -175,7 +182,14 @@ class UserLoginResource(Resource):
 
         if check == False:
             return {'error':'비밀번호가 맞지 않습니다.'}
-
+            
+        # user_id를 바로 보내면 안되고, JWT로 암호화 해서 보내준다.
+        # 암호화 하는 방법
+        access_token = create_access_token(user_info['id'])
+        # 대게는 이런 변수명으로 저장한다.
 
         return {'result': 'success',
-                'user_id':user_info['id']},200
+                'access_token':access_token},200
+
+        # return {'result': 'success',
+        #         'user_id':user_info['id']},200
