@@ -37,10 +37,10 @@ class RecipeListResource(Resource):
 
             # 2. 쿼리문 만들기
             query = '''insert into recipe
-                    (name, description, cook_time, directions)
+                    (name, description, cook_time, directions, user_id)
                     values
-                    (%s,%s,%s,%s);'''
-            record = (data['name'],data['description'], data['cook_time'],data['directions'] )
+                    (%s,%s,%s,%s,%s);'''
+            record = (data['name'],data['description'], data['cook_time'],data['directions'], data['user_id'] )
 
             # 3. 커서를 가져온다.
             cursor = connection.cursor()
@@ -110,14 +110,7 @@ class RecipeListResource(Resource):
 
             return {"error" : str(e)}, 503
             # 503으로 보내겠다.
-        
-
-        # result_list정상적일 때는 결과가 리스트의 행이 하나, 
-
-        # 3. result_list의 행의 갯수가 1개이면, 유저 데이터를 정상적으로 받아온것이고, 
-        # 행의 갯수가 0이면, 요청한 이메일은, 회원가입이 되어있지 않은 이메일이다.
-
-
+ 
 
         return { "result" : "success" , 
                 "count" : len(result_list) ,

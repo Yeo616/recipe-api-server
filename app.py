@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api
+from config import Config
 from resources.recipe import RecipeListResource
 from resources.recipe_info import RecipeResource
 from resources.recipe_publish import RecipePublishResource
@@ -8,6 +9,13 @@ from resources.user import UserLoginResource, UserRegisterResource
 
 
 app = Flask(__name__)
+
+# 환경 변수 셋팅
+app.config.from_object(Config)
+
+# JWT 토큰 라이브러리 만들기
+
+
 
 # 우리가 만들건 restful 서버임
 
