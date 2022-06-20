@@ -22,6 +22,9 @@ class RecipeListResource(Resource):
         # 만든다음에 우리가 작성한 URL에 연결시킬것이다. 
         # api 실행 코드를 여기에 작성
 
+        # 1. 쿨라이언트가 body에 보내준 json을 받아온다.
+        # body로 받는 데이터는 아래 함수를 사용한다.
+        
         # 클라이언트에서, body 부분에 작성한 json을 
         # 받아오는 코드
         data = request.get_json()
@@ -73,6 +76,7 @@ class RecipeListResource(Resource):
 
             query = '''select *
                     from recipe
+                    where is_publish =1
                     limit '''+offset+''' , '''+limit+''';'''
 
 

@@ -12,4 +12,12 @@ def get_connection():
     return connection
 # 파이썬에서 mysql로 접속하는 코드
 
+# 내가 mysql로 작성했던 코드와 같아야한다. (아래 참고)
+
+# use mysql;
+# create user 'recipe_user2'@'%' identified by 'recipe1234';
+# grant all on recipe_db1.* to 'recipe_user2'@'%';
+
+
+
 
