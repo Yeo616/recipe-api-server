@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from flask import request
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt, jwt_required
 from flask_restful import Resource
 from mysql.connector.errors import Error
 from mysql_connection import get_connection
@@ -36,7 +36,7 @@ class UserRegisterResource(Resource):
 
         except EmailNotValidError as e:
             # email is not valid, exception message is human-readable
-            # 이메일이 유요하진 않으면, 해당 코드는 실행된다. 
+            # 이메일이 유효하진 않으면, 해당 코드는 실행된다. 
             print(str(e))
             return {'error': str(e)}, 400
             # 에러 문자열 보내주고, 400번 코드로 보내줄 것이다.
@@ -194,3 +194,20 @@ class UserLoginResource(Resource):
 
         # return {'result': 'success',
         #         'user_id':user_info['id']},200
+    
+# ------------------------------------------#
+from flask_jwt_extended import get_jwt
+
+jwt_blacklist = set()
+
+# 로그아웃 기능을 하는 클래스 (2022.06.21)
+class UserLogoutResource(Resource) :
+    @jwt_required()   # 헤더에 access토큰이 있는 요청만 수행한다.
+    def post(self):
+        jti = get_jwt()['jti']
+        print(jti)
+        
+        jwt_blacklist.add(jti)
+
+        return {'result':'success'},200
+
