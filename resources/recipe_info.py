@@ -7,7 +7,7 @@ from mysql.connector.errors import Error
 from mysql_connection import get_connection
 import mysql.connector
 
-class RecipeResource(Resource) :
+class RecipeResource(Resource) : # get, put(업데이트), delete(삭제)
     
     # 클라이언트로부터 /recipes/3 이런식으로 경로를 처리하므로
     # 숫자는 바뀌므로, 변수로 처리해준다.

@@ -8,7 +8,7 @@ from mysql_connection import get_connection
 import mysql.connector
 from mysql_connection import get_connection
 
-### API를 만들기 ㅜ이한 클래스 작성
+### API를 만들기 위한 클래스 작성
 ### class(클래스)란?? 변수와 함수로 구성된 묶음!
 ### 클래스는 상속이 가능하다! 
 ### API를 만들기 위한 클래스는, flask_restful 라이브러리의 

@@ -6,7 +6,7 @@ from mysql_connection import get_connection
 import mysql.connector
 
 
-class RecipePublishResource(Resource):
+class RecipePublishResource(Resource): # 레시피 공개, 임시저장
     # 레시피를 공개한다.
     def put(self, recipe_id): # put이라는 메소드를 처리하는 함수
         
