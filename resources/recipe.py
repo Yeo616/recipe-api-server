@@ -16,7 +16,7 @@ from mysql_connection import get_connection
 
 
 # 우리가 지금 만드는 API는 POST임.
-class RecipeListResource(Resource):
+class RecipeListResource(Resource): # post(생성), get(조회)
     # restful api의 method에 해당하는 함수 작성
 
     @ jwt_required()

@@ -47,7 +47,7 @@ api.add_resource(RecipeResource,'/recipes/<int:recipe_id>') # 이 뒤에있는 �
 # 한 경로당, 한 class 임.
 
 api.add_resource(RecipePublishResource,'/recipes/<int:recipe_id>/publish') 
-# 레시피 공개, 
+# # 레시피 공개, 임시저장
 # 숫자가 올것이다. 숫자가 바뀔수도 있으니, 내가 변수처리를 하겠다. 
 # 어떤 숫자가 올지는 클라가 바꿔서 보낸다.
 api.add_resource(UserRegisterResource,'/users/register')
